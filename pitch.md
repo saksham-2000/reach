@@ -16,13 +16,13 @@ That's the problem.
 
 Every morning, your college email gets you three things:
 
-- a **number** — between 1 and 9
+- a **value** — one number between 1 and 9
 - a **PIN** — four digits, each 1 to 9
-- a **target** — the score you have to hit today
+- a **target** — the exact score you have to hit today
 
-You start at zero. You can't use your own number.
+You start at zero. You need to hit the target **exactly** — not close, not over. Exactly.
 
-So how do you reach the target?
+And you can't use your own value to get there.
 
 ---
 
@@ -32,17 +32,18 @@ You walk up to someone. Anyone.
 
 *"Hey, weird question — what's your number today?"*
 
-They tell you. They show you their PIN. You type both into the app. You choose **add** or **subtract**. Their number is now part of your score.
+They tell you. They show you their PIN. You type both into the app. You choose **add** or **subtract** — because sometimes you've gone too far and you need someone to pull you back. Their number moves your score.
 
-Hit the target exactly → **streak +1**. Miss it → **streak resets to zero**.
+Hit the target exactly → **streak +1**, and tomorrow's target starts higher. Miss it → **streak resets to zero**.
 
 ---
 
 **[0:50–1:15] The rules that make it work.**
 
 - You can't use your own value. Growth doesn't come from yourself.
-- The value and PIN have to match. You can't guess. You have to actually **ask**.
+- The value and PIN have to match a real player's assignment for today. You can't guess. You have to actually **ask**.
 - Once you've asked someone, you can't ask them again for **three days**. No leaning on the same friend. Go find someone new.
+- Every streak day your target climbs from where yesterday ended. The longer you go, the harder it gets, and the more strangers you need.
 - Everything resets at midnight.
 
 Every rule exists to push you off your phone and toward a person.
@@ -61,4 +62,4 @@ We just gave you a reason.
 
 ---
 
-**Try it:** open `index.html`. Sign in with a `.edu` email. Open a second browser window, sign in as someone else. Trade numbers. See what happens when a game costs you nothing but a hello.
+**Try it:** open `index.html`. Sign in with any `.edu` email. The app comes with a built-in demo roster — six real identities (ada@mit.edu, grace@stanford.edu, and others) are already in your directory. Ask them. See what happens when a game costs you nothing but a hello.
