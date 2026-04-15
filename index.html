@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Reach</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="landing">
+  <main>
+    <header>
+      <h1>Reach.</h1>
+      <p class="tagline">A game that only works if you talk to someone you don't know yet.</p>
+    </header>
+
+    <section class="card">
+      <label for="email">your college email</label>
+      <form id="signin">
+        <input id="email" name="email" type="email" autocomplete="email"
+               placeholder="you@school.edu" required />
+        <button type="submit">begin</button>
+      </form>
+      <p id="error" class="error" hidden></p>
+    </section>
+
+    <footer>
+      <p>today you'll get a number, a pin, and a target.<br/>
+         you cannot reach the target alone. that's the whole game.</p>
+    </footer>
+  </main>
+  <script src="js/identity.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/landing.js"></script>
+</body>
+</html>
