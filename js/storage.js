@@ -18,8 +18,15 @@
   }
 
   function loadDirectory() {
-    try { return JSON.parse(localStorage.getItem(DIRECTORY_KEY)) || []; }
-    catch (_) { return []; }
+    let stored = [];
+    try { stored = JSON.parse(localStorage.getItem(DIRECTORY_KEY)) || []; }
+    catch (_) { stored = []; }
+    // Always include the demo roster so the prototype works in a single browser.
+    const merged = stored.slice();
+    for (const e of Identity.DEMO_EMAILS) {
+      if (!merged.includes(e)) merged.push(e);
+    }
+    return merged;
   }
   function addToDirectory(email) {
     const dir = loadDirectory();

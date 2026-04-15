@@ -69,6 +69,9 @@
       if (concedeBtn) concedeBtn.hidden = false;
     }
 
+    // Demo roster
+    renderRoster();
+
     // History
     if (user.today.history.length > 0) {
       historySection.hidden = false;
@@ -88,6 +91,49 @@
     } else {
       historySection.hidden = true;
     }
+  }
+
+  function renderRoster() {
+    const list = document.getElementById('roster-list');
+    if (!list) return;
+    list.innerHTML = '';
+    const today = identity.dateKey;
+    Identity.DEMO_EMAILS.forEach((e) => {
+      if (e === email) return; // can't use own
+      const id = Identity.identityFor(e, new Date());
+      const pinStr = id.pin.join('-');
+      const lastAsked = user.asksByPin && user.asksByPin[pinStr];
+      const li = document.createElement('li');
+      const emailSpan = document.createElement('span');
+      emailSpan.className = 'email';
+      emailSpan.textContent = e;
+      const valSpan = document.createElement('span');
+      valSpan.className = 'val';
+      valSpan.textContent = id.value;
+      const pinSpan = document.createElement('span');
+      pinSpan.className = 'pn';
+      pinSpan.textContent = Identity.formatPin(id.pin);
+      li.appendChild(emailSpan);
+      li.appendChild(valSpan);
+      li.appendChild(pinSpan);
+      if (lastAsked) {
+        const daysAgo = Math.max(0, daysBetween(lastAsked, today));
+        if (daysAgo < 3) {
+          const note = document.createElement('span');
+          note.className = 'cooldown';
+          note.style.gridColumn = '1 / -1';
+          note.textContent = `asked ${daysAgo === 0 ? 'today' : daysAgo + 'd ago'} — wait ${3 - daysAgo} more`;
+          li.appendChild(note);
+        }
+      }
+      list.appendChild(li);
+    });
+  }
+
+  function daysBetween(a, b) {
+    const [y1, m1, d1] = a.split('-').map(Number);
+    const [y2, m2, d2] = b.split('-').map(Number);
+    return Math.round((new Date(y2, m2 - 1, d2) - new Date(y1, m1 - 1, d1)) / 86400000);
   }
 
   function disableForm(disabled) {

@@ -212,6 +212,22 @@ button.concede {
   font-size: 12px;
 }
 
+.roster-list { list-style: none; padding: 0; margin: 0; }
+.roster-list li {
+  display: grid;
+  grid-template-columns: 1.4fr auto auto;
+  gap: 12px;
+  align-items: baseline;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 14px;
+}
+.roster-list li:last-child { border-bottom: none; }
+.roster-list .email { color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.roster-list .val { font-family: var(--serif); font-size: 20px; color: var(--ink); }
+.roster-list .pn { font-family: var(--mono); font-size: 14px; color: var(--ink); letter-spacing: 0.05em; }
+.roster-list .cooldown { color: var(--muted); font-style: italic; font-size: 12px; }
+
 .history { margin-top: 8px; }
 .history ul { list-style: none; padding: 0; margin: 0; }
 .history li {

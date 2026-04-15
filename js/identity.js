@@ -88,6 +88,17 @@
     return true;
   }
 
+  // Seed roster — always present in the verification directory so a solo
+  // demoer can use these identities without needing a second browser.
+  const DEMO_EMAILS = [
+    'ada@mit.edu',
+    'grace@stanford.edu',
+    'alan@cam.ac.uk',
+    'maria@usp.edu.br',
+    'linus@helsinki.edu',
+    'hedy@ucla.edu',
+  ];
+
   global.Identity = {
     identityFor,
     isCollegeEmail,
@@ -95,5 +106,6 @@
     parsePin,
     pinsEqual,
     todayKey,
+    DEMO_EMAILS,
   };
 })(window);
