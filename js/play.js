@@ -22,7 +22,7 @@
   const myPinEl = $('my-pin');
   const useForm = $('use-form');
   const theirValueInput = $('their-value');
-  const theirPinInput = $('their-pin');
+  const pinBoxes = Array.from(document.querySelectorAll('#their-pin .pin-box'));
   const useError = $('use-error');
   const historySection = $('history');
   const historyList = $('history-list');
@@ -167,14 +167,17 @@
       clearUseError();
       const op = btn.dataset.op === 'add' ? 'add' : 'sub';
       const theirValue = Number(theirValueInput.value);
-      const theirPin = Identity.parsePin(theirPinInput.value);
+      const pinDigits = pinBoxes.map((b) => Number(b.value));
+      const theirPin = pinDigits.every((n) => Number.isInteger(n) && n >= 1 && n <= 9)
+        ? pinDigits : null;
 
       if (!Number.isInteger(theirValue) || theirValue < 1 || theirValue > 9) {
         showUseError('their value must be a whole number 1–9.');
         return;
       }
       if (!theirPin) {
-        showUseError('pin must be four numbers 1–9, separated by spaces, commas, or dashes.');
+        showUseError('pin must be four digits, each 1–9.');
+        pinBoxes.find((b) => !/^[1-9]$/.test(b.value))?.focus();
         return;
       }
 
@@ -185,8 +188,9 @@
       }
       user = result.state;
       theirValueInput.value = '';
-      theirPinInput.value = '';
+      pinBoxes.forEach((b) => { b.value = ''; b.classList.remove('filled'); });
       render();
+      maybeCelebrate();
     });
   });
 
@@ -205,5 +209,134 @@
     render();
   });
 
+  // PIN box auto-advance / backspace navigation.
+  pinBoxes.forEach((box, i) => {
+    box.addEventListener('input', () => {
+      // Filter: only 1–9 single digit. 0 rejected.
+      const v = box.value.replace(/[^1-9]/g, '').slice(-1);
+      box.value = v;
+      box.classList.toggle('filled', !!v);
+      if (v && i < pinBoxes.length - 1) pinBoxes[i + 1].focus();
+    });
+    box.addEventListener('keydown', (e) => {
+      if (e.key === 'Backspace' && !box.value && i > 0) {
+        pinBoxes[i - 1].focus();
+        pinBoxes[i - 1].value = '';
+        pinBoxes[i - 1].classList.remove('filled');
+        e.preventDefault();
+      } else if (e.key === 'ArrowLeft' && i > 0) {
+        pinBoxes[i - 1].focus();
+        e.preventDefault();
+      } else if (e.key === 'ArrowRight' && i < pinBoxes.length - 1) {
+        pinBoxes[i + 1].focus();
+        e.preventDefault();
+      }
+    });
+    box.addEventListener('paste', (e) => {
+      const text = (e.clipboardData || window.clipboardData).getData('text') || '';
+      const digits = text.replace(/[^1-9]/g, '').slice(0, pinBoxes.length - i).split('');
+      if (digits.length === 0) return;
+      e.preventDefault();
+      digits.forEach((d, k) => {
+        const target = pinBoxes[i + k];
+        if (!target) return;
+        target.value = d;
+        target.classList.add('filled');
+      });
+      const nextIdx = Math.min(i + digits.length, pinBoxes.length - 1);
+      pinBoxes[nextIdx].focus();
+    });
+  });
+
+  // --- Celebration ---
+  const CELEBRATED_KEY = 'reach.celebrated';
+  function maybeCelebrate() {
+    if (user.today.resolved !== 'won') return;
+    const key = email + '|' + user.today.dateKey;
+    if (localStorage.getItem(CELEBRATED_KEY) === key) return;
+    localStorage.setItem(CELEBRATED_KEY, key);
+    confettiBurst();
+    showCelebration();
+  }
+
+  function showCelebration() {
+    const overlay = document.createElement('div');
+    overlay.className = 'celebration';
+    overlay.innerHTML = `
+      <div class="celebration-card" role="dialog" aria-live="assertive">
+        <div class="kicker">target reached</div>
+        <h2>you made it.</h2>
+        <p>someone said yes. the day counts.</p>
+        <div class="stats">
+          <div class="stat"><span class="num">${user.today.target}</span><span class="lbl">score</span></div>
+          <div class="stat"><span class="num">${user.streak}</span><span class="lbl">streak</span></div>
+        </div>
+        <button type="button" class="close-celebration">keep going</button>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+    const close = () => overlay.remove();
+    overlay.querySelector('.close-celebration').addEventListener('click', close);
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+    document.addEventListener('keydown', function esc(ev) {
+      if (ev.key === 'Escape') { close(); document.removeEventListener('keydown', esc); }
+    });
+  }
+
+  function confettiBurst() {
+    const canvas = document.createElement('canvas');
+    canvas.className = 'confetti';
+    document.body.appendChild(canvas);
+    const ctx = canvas.getContext('2d');
+    const resize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; };
+    resize();
+    window.addEventListener('resize', resize);
+
+    const colors = ['#c4502b', '#3f7d3f', '#1c1b1a', '#d4a94a', '#7a7570'];
+    const cx = canvas.width / 2;
+    const cy = canvas.height / 2 - 40;
+    const pieces = Array.from({ length: 180 }, () => ({
+      x: cx + (Math.random() - 0.5) * 80,
+      y: cy,
+      vx: (Math.random() - 0.5) * 14,
+      vy: -Math.random() * 16 - 4,
+      g: 0.36,
+      drag: 0.995,
+      rot: Math.random() * Math.PI * 2,
+      vr: (Math.random() - 0.5) * 0.35,
+      size: 5 + Math.random() * 7,
+      color: colors[Math.floor(Math.random() * colors.length)],
+    }));
+
+    let frame = 0;
+    const MAX = 260;
+    function tick() {
+      frame++;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (const p of pieces) {
+        p.vy += p.g;
+        p.vx *= p.drag;
+        p.x += p.vx;
+        p.y += p.vy;
+        p.rot += p.vr;
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rot);
+        ctx.fillStyle = p.color;
+        ctx.fillRect(-p.size / 2, -p.size * 0.2, p.size, p.size * 0.4);
+        ctx.restore();
+      }
+      if (frame < MAX) {
+        requestAnimationFrame(tick);
+      } else {
+        window.removeEventListener('resize', resize);
+        canvas.remove();
+      }
+    }
+    tick();
+  }
+
   render();
+  // If the page was reloaded on a won state, still celebrate (once).
+  maybeCelebrate();
 })();

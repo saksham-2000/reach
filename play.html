@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Reach — today</title>
-  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/styles.css?v=3" />
 </head>
 <body class="play">
   <main>
@@ -57,9 +57,12 @@
           </label>
           <label>
             <span>their pin</span>
-            <input id="their-pin" type="text" inputmode="numeric"
-                   pattern="[0-9 ,-]*" maxlength="14"
-                   placeholder="e.g. 3 7 9 2" required />
+            <div class="pin-boxes" id="their-pin">
+              <input class="pin-box" type="text" inputmode="numeric" maxlength="1" pattern="[1-9]" aria-label="pin digit 1" required />
+              <input class="pin-box" type="text" inputmode="numeric" maxlength="1" pattern="[1-9]" aria-label="pin digit 2" required />
+              <input class="pin-box" type="text" inputmode="numeric" maxlength="1" pattern="[1-9]" aria-label="pin digit 3" required />
+              <input class="pin-box" type="text" inputmode="numeric" maxlength="1" pattern="[1-9]" aria-label="pin digit 4" required />
+            </div>
           </label>
         </div>
         <div class="actions">
@@ -87,8 +90,8 @@
     </footer>
   </main>
 
-  <script src="js/identity.js"></script>
-  <script src="js/storage.js"></script>
-  <script src="js/play.js"></script>
+  <script src="js/identity.js?v=3"></script>
+  <script src="js/storage.js?v=3"></script>
+  <script src="js/play.js?v=3"></script>
 </body>
 </html>

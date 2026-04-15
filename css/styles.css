@@ -198,6 +198,28 @@ nav {
 #use-form label { display: block; }
 #use-form label span { display: block; font-size: 11px; text-transform: uppercase;
   letter-spacing: 0.14em; color: var(--muted); margin-bottom: 6px; }
+.pin-boxes {
+  display: flex;
+  gap: 8px;
+}
+.pin-box {
+  width: 48px;
+  height: 56px;
+  padding: 0;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 26px;
+  letter-spacing: 0;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.15s, transform 0.1s;
+}
+.pin-box:focus { border-color: var(--accent); }
+.pin-box.filled { border-color: var(--ink); }
+
 #use-form .actions {
   display: flex; gap: 8px; margin-top: 16px;
 }
@@ -242,6 +264,88 @@ button.concede {
 .history li .op { color: var(--ink); font-family: var(--mono); }
 
 .won footer p, .lost footer p { font-family: var(--serif); font-style: italic; font-size: 16px; color: var(--ink); }
+
+/* confetti canvas */
+canvas.confetti {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9998;
+}
+
+/* celebration overlay */
+.celebration {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(246, 243, 238, 0.78);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  animation: fadein 0.25s ease-out;
+}
+.celebration-card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 40px 36px 32px;
+  text-align: center;
+  max-width: 380px;
+  box-shadow: 0 20px 60px rgba(28, 27, 26, 0.18);
+  animation: pop 0.45s cubic-bezier(.2,1.2,.3,1);
+}
+.celebration-card .kicker {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+.celebration-card h2 {
+  font-family: var(--serif);
+  font-size: 36px;
+  line-height: 1.1;
+  margin: 0 0 12px;
+  letter-spacing: -0.02em;
+}
+.celebration-card p {
+  color: var(--muted);
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 16px;
+  margin: 0 0 24px;
+}
+.celebration-card .stats {
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+  margin-bottom: 24px;
+}
+.celebration-card .stat { text-align: center; }
+.celebration-card .stat .num {
+  display: block;
+  font-family: var(--serif);
+  font-size: 40px;
+  line-height: 1;
+}
+.celebration-card .stat .lbl {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--muted);
+  margin-top: 6px;
+  display: block;
+}
+.celebration-card button { width: 100%; }
+
+@keyframes fadein { from { opacity: 0; } to { opacity: 1; } }
+@keyframes pop {
+  0% { transform: scale(0.6); opacity: 0; }
+  60% { transform: scale(1.04); opacity: 1; }
+  100% { transform: scale(1); }
+}
 
 @media (max-width: 480px) {
   main { padding: 32px 20px 60px; }
