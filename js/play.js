@@ -123,12 +123,12 @@
       const theirValue = Number(theirValueInput.value);
       const theirPin = Identity.parsePin(theirPinInput.value);
 
-      if (!Number.isInteger(theirValue) || theirValue < 1 || theirValue > 10) {
-        showUseError('their value must be a whole number 1–10.');
+      if (!Number.isInteger(theirValue) || theirValue < 1 || theirValue > 9) {
+        showUseError('their value must be a whole number 1–9.');
         return;
       }
       if (!theirPin) {
-        showUseError('pin must be four numbers 1–10, separated by spaces, commas, or dashes.');
+        showUseError('pin must be four numbers 1–9, separated by spaces, commas, or dashes.');
         return;
       }
 

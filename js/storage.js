@@ -187,6 +187,20 @@
     return { ok: true, state: user };
   }
 
+  // Check that the entered (value, pin) matches some registered player's
+  // assignment for today — excluding the caller themselves.
+  function verifyPair(selfIdentity, theirValue, theirPin) {
+    const dir = loadDirectory();
+    for (const email of dir) {
+      if (email === selfIdentity.email) continue;
+      const id = Identity.identityFor(email, new Date());
+      if (id.value === theirValue && Identity.pinsEqual(id.pin, theirPin)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   // Called when the player explicitly gives up / day ends.
   function concedeDay(user) {
     if (!user.today || user.today.resolved) return user;
@@ -206,5 +220,7 @@
     ensureToday,
     applyMove,
     concedeDay,
+    loadDirectory,
+    addToDirectory,
   };
 })(window);

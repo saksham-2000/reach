@@ -12,8 +12,8 @@ The bridge isn't the app. The bridge is the five seconds where you walk up to a 
 
 **1. Sign in** with your college email. Each day you're assigned:
 
-- **A value** — one number between 1 and 10. Yours for the day.
-- **A PIN** — four digits, each 1–10. This is how other people "use" your value.
+- **A value** — one number between 1 and 9. Yours for the day.
+- **A PIN** — four digits, each 1–9. This is how other people "use" your value.
 - **A target** — the score you're trying to reach today.
 - **A starting score** — 0 if you're new, or yesterday's target if your streak is alive.
 
@@ -26,9 +26,11 @@ The bridge isn't the app. The bridge is the five seconds where you walk up to a 
 ## The small rules
 
 - You **cannot** use your own value. Growth doesn't come from yourself.
-- Each PIN works once per day, per person asking. No hoarding.
-- Miss the target by sundown and the streak breaks. Tomorrow starts from zero.
-- Everything — your value, their value, every digit of every PIN — is between 1 and 10. On purpose. The game is not the math.
+- The value and PIN must **both match** the same person's assignment for today. A wrong pair won't work — no guessing.
+- Each PIN works once per day.
+- Once you ask a person, you **can't ask them again for three days**. Go find someone new. That's the point.
+- Hit the target → streak **+1**. Miss or concede → streak **resets to 0**.
+- Everything — your value, their value, every digit of every PIN — is between 1 and 9. On purpose. The game is not the math.
 
 ## What this isn't
 
